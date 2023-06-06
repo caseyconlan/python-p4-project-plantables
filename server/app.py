@@ -3,12 +3,14 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request
+from flask import Flask, request
 from flask_restful import Resource
+from flask_sqlalchemy import SQLAlchemy
 
 # Local imports
 from config import app, db, api
-from models import User
+from models import Owner
+
 
 # Views go here!
 
