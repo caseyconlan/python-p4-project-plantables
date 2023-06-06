@@ -1,8 +1,8 @@
 body {
-    background-image: url("Plant Game Mockup Style 1.jpg");
+    background-image: url("Home Page With Pots.jpg");
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 60% 85%;   
+    background-size: 70% 100%;   
     background-color: #77ab59;
     margin: 0;
     padding: 0;
@@ -22,14 +22,6 @@ body {
 .plant {
     position: relative;
     margin: 20px;
-}
-
-.dropdown {
-    position: absolute;
-    bottom: -100px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;  
 }
 
 .plant img {
