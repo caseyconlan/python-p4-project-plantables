@@ -20,7 +20,16 @@ body {
 }
 
 .plant {
+    position: relative;
     margin: 20px;
+}
+
+.dropdown {
+    position: absolute;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;  
 }
 
 .plant img {
