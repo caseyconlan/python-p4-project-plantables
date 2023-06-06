@@ -1,5 +1,6 @@
 
 ![ERD Diagram initial](https://github.com/caseyconlan/python-p4-project-plantables/assets/122056046/08a9ff41-4269-44a0-b61c-81bba482ad59)
+![Landing Page Mockup](https://github.com/caseyconlan/python-p4-project-plantables/assets/122056046/430a4129-b42f-44d5-aa73-c3a44b9c3da1)
 
 # Phase 4 Full-Stack Application Project Template
 
