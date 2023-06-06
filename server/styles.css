@@ -1,0 +1,30 @@
+body {
+    background-image: url("Plant Game Mockup Style 1.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 60% 85%;   
+    background-color: #77ab59;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+.window-sill {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 80vh;
+}
+
+.plant {
+    margin: 20px;
+}
+
+.plant img {
+    max-height: 100px;
+    height: auto;
+    width: auto;
+}
