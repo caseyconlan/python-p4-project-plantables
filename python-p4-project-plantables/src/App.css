@@ -1,0 +1,54 @@
+/* App.css */
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #e8f5e9; /* A light green background */
+  font-family: Arial, sans-serif;
+  color: #1b5e20; /* A dark green text color */
+  padding: 20px;
+}
+
+.pots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.plant-catalog {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  border: 2px solid #1b5e20; /* A dark green border */
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #c8e6c9; /* A slightly darker green background */
+}
+
+.plant-catalog div {
+  flex: 1 1 200px; /* Flexible layout so plant boxes adjust to the window width */
+  margin: 10px;
+  padding: 10px;
+  border: 2px solid #4caf50; /* A green border */
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer; /* A hand cursor for clickable items */
+  transition: transform 0.3s; /* A smooth transition for hover effects */
+}
+
+.plant-catalog div:hover {
+  transform: scale(1.05); /* Slightly enlarge plant boxes on hover */
+}
+
+.plant {
+  border: 2px solid #4caf50; /* A green border */
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+}
