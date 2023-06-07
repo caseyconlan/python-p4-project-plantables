@@ -21,3 +21,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+# .gitignore
+
+# Ignore the virtual environment folder (if you're using one)
+venv/
+
+# Ignore compiled Python bytecode
+__pycache__/
+
+# Ignore the .env file
+.env
