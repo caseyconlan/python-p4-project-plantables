@@ -1,11 +1,22 @@
 import React from 'react';
-import Plants from './Plants.js';
+import './App.css';
 
 function Pots({ selectedPlants }) {
     return (
         <div className="pots">
             {selectedPlants.map((plant, index) => (
-                <Plants key={index} plant={plant} />
+                <div className="pot" key={index}>
+                    {plant ? (
+                        <>
+                            <img src={plant.image} alt={plant.name} />
+                            <h2>{plant.name}</h2>
+                            <p>Water: {plant.water}</p>
+                            <p>Light: {plant.light}</p>
+                        </>
+                    ) : (
+                        <p>No plant selected</p>
+                    )}
+                </div>
             ))}
         </div>
     );

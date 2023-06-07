@@ -1,29 +1,54 @@
+// Login.js
 import React, { useState } from 'react';
+import './App.css';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function Login({ setLoggedIn }) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [creatingAccount, setCreatingAccount] = useState(false);
 
-  const onSubmit = e => {
-    e.preventDefault();
-    console.log(`Email: ${email}, Password: ${password}`);
-  }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (creatingAccount) {
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+            console.log(`Creating account for ${username}`);
+            setUsername('');
+            setPassword('');
+            setConfirmPassword('');
+            setCreatingAccount(false);
+        } else {
+            setLoggedIn(true);
+        }
+    };
 
-  return (
-    <form onSubmit={onSubmit}>
-      <label>
-        Email:
-        <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
-      </label>
-      <label>
-        Password:
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      </label>
-      <button type="submit">Login</button>
-    </form>
-  );
+    return (
+        <div className="login">
+            <form onSubmit={handleSubmit}>
+                <label>
+                    Username:
+                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                </label>
+                <label>
+                    Password:
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                </label>
+                {creatingAccount && (
+                    <label>
+                        Confirm Password:
+                        <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                    </label>
+                )}
+                <input type="submit" value={creatingAccount ? "Create account" : "Log in"} />
+            </form>
+            <button onClick={() => setCreatingAccount(!creatingAccount)}>
+                {creatingAccount ? "Already have an account?" : "Create a new account"}
+            </button>
+        </div>
+    );
 }
 
-export default function LoginPage() {
-  return <Login />;
-}
+export default Login;
