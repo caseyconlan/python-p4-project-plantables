@@ -26,14 +26,17 @@ const plantCatalog = [
 
 function PlantCatalog({ selectPlant }) {
     return (
-        <div className="plant-catalog">
-            {plantCatalog.map((plant, index) => (
-                <div key={index} onClick={() => selectPlant(index, plant)}>
-                    <h2>{plant.name}</h2>
-                    <p>{plant.water}</p>
-                    <p>{plant.light}</p>
-                </div>
-            ))}
+        <div className="plant-catalog-container">
+            <div className="plant-catalog">
+                {plantCatalog.map((plant, index) => (
+                    <div className="plant-item" key={index} onClick={() => selectPlant(index, plant)}>
+                        <img src={plant.image} alt={plant.name} />
+                        <h2>{plant.name}</h2>
+                        <p>{plant.water}</p>
+                        <p>{plant.light}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

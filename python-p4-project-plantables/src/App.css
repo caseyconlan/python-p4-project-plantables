@@ -18,15 +18,27 @@
   margin-top: 20px;
 }
 
-.plant-catalog {
+.plant-catalog .plant-item {
+  width: 200px; /* Adjust this as needed */
+  height: 300px; /* Adjust this as needed */
+  overflow: hidden; /* Prevents the image from overflowing the div */
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  border: 2px solid #1b5e20; /* A dark green border */
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  background-color: #c8e6c9; /* A slightly darker green background */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack the child elements vertically */
+}
+
+.plant-catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.plant-catalog .plant-item img {
+  width: 50%; /* This will make the image take the full width of the parent div */
+  height: 50%; /* This will make the image take the full height of the parent div */
+  object-fit: cover; /* This will make the image cover the entire area of the div, cropping it if necessary */
+  align-items: center;
 }
 
 .plant-catalog div {
@@ -38,6 +50,9 @@
   text-align: center;
   cursor: pointer; /* A hand cursor for clickable items */
   transition: transform 0.3s; /* A smooth transition for hover effects */
+  width: 200px; /* Adjust this as needed */
+  height: 300px; /* Adjust this as needed */
+  overflow: hidden; /* Prevents the image from overflowing the div */
 }
 
 .plant-catalog div:hover {
@@ -51,4 +66,9 @@
   padding: 10px;
   width: 200px;
   text-align: center;
+}
+
+.plant-catalog-container {
+  max-width: 1200px; /* Adjust this as needed */
+  margin: 0 auto; /* This centers the grid in its container */
 }
