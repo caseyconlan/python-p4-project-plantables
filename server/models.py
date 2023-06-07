@@ -6,7 +6,8 @@ from config import db
 
 # Models go here!
 
-class OwnedPlant(db.Model):
+
+class OwnedPlant(db.Model, SerializerMixin):
     __tablename__ = 'owned_plants'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -16,7 +17,8 @@ class OwnedPlant(db.Model):
     # Add a unique constraint to ensure only one instance of OwnedPlant per owner and plant
     db.UniqueConstraint('owner_id', 'plant_id')
 
-class Owner(db.Model):
+
+class Owner(db.Model, SerializerMixin):
     __tablename__ = 'owners'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -28,7 +30,8 @@ class Owner(db.Model):
     bankroll = db.Column(db.Integer, nullable=False)
     plants = association_proxy('owned_plants', 'plant')
 
-class Plant(db.Model):
+
+class Plant(db.Model, SerializerMixin):
     __tablename__ = 'plants'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -41,11 +44,3 @@ class Plant(db.Model):
     fertilizer_req = db.Column(db.String(100))
     pests = db.Column(db.Boolean)
     owned_plants = db.relationship('OwnedPlant', backref='plant')
-
-
-
-
-
-    
-    
-
