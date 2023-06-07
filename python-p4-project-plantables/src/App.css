@@ -1,0 +1,74 @@
+/* App.css */
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #e8f5e9; /* A light green background */
+  font-family: Arial, sans-serif;
+  color: #1b5e20; /* A dark green text color */
+  padding: 20px;
+}
+
+.pots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.plant-catalog .plant-item {
+  width: 200px; /* Adjust this as needed */
+  height: 300px; /* Adjust this as needed */
+  overflow: hidden; /* Prevents the image from overflowing the div */
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack the child elements vertically */
+}
+
+.plant-catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.plant-catalog .plant-item img {
+  width: 50%; /* This will make the image take the full width of the parent div */
+  height: 50%; /* This will make the image take the full height of the parent div */
+  object-fit: cover; /* This will make the image cover the entire area of the div, cropping it if necessary */
+  align-items: center;
+}
+
+.plant-catalog div {
+  flex: 1 1 200px; /* Flexible layout so plant boxes adjust to the window width */
+  margin: 10px;
+  padding: 10px;
+  border: 2px solid #4caf50; /* A green border */
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer; /* A hand cursor for clickable items */
+  transition: transform 0.3s; /* A smooth transition for hover effects */
+  width: 200px; /* Adjust this as needed */
+  height: 300px; /* Adjust this as needed */
+  overflow: hidden; /* Prevents the image from overflowing the div */
+}
+
+.plant-catalog div:hover {
+  transform: scale(1.05); /* Slightly enlarge plant boxes on hover */
+}
+
+.plant {
+  border: 2px solid #4caf50; /* A green border */
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+}
+
+.plant-catalog-container {
+  max-width: 1200px; /* Adjust this as needed */
+  margin: 0 auto; /* This centers the grid in its container */
+}
