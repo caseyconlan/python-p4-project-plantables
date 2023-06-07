@@ -75,6 +75,7 @@ class OwnerPlants(Resource):
             plant_data = [plant.to_dict() for plant in plants]  # Convert plants to dictionaries
             return make_response(jsonify(plant_data), 200)
         else:
+            
             return make_response(jsonify({'message': 'Owner not found'}), 404)
 
 
