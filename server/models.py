@@ -13,9 +13,6 @@ class OwnedPlant(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('owners.id'))
     plant_id = db.Column(db.Integer, db.ForeignKey('plants.id'))
 
-    owner = db.relationship('Owner', backref=db.backref('owned_plants', cascade='all, delete-orphan'))
-    plant = db.relationship('Plant', backref=db.backref('owned_plants', cascade='all, delete-orphan'))
-
     # Add a unique constraint to ensure only one instance of OwnedPlant per owner and plant
     db.UniqueConstraint('owner_id', 'plant_id')
 

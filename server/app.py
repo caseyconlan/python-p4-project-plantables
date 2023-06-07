@@ -4,36 +4,52 @@
 
 # Remote library imports
 from flask import Flask, jsonify, request, make_response
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from wtforms import StringField, IntegerField, SubmitField
+from wtforms.validators import DataRequired, Email, Length
+
 
 # Local imports
 from config import app, db, api
 from models import Owner, Plant
 
-class OwnerList(Resource):
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('first_name', type=str, required=True)
-        parser.add_argument('last_name', type=str, required=True)
-        parser.add_argument('email', type=str, required=True)
-        parser.add_argument('username', type=str, required=True)
-        parser.add_argument('password', type=str, required=True)
-        parser.add_argument('bankroll', type=int, required=True)
-        args = parser.parse_args()
+class OwnerForm(FlaskForm):
+    csrf_enabled = False
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[DataRequired()])
+    password = StringField('Password', validators=[DataRequired(), Length(min=6)])
+    bankroll = IntegerField('Bankroll', validators=[DataRequired()])
+    submit = SubmitField('Create Owner')
+    
 
-        new_owner = Owner(
-            first_name=args['first_name'],
-            last_name=args['last_name'],
-            email=args['email'],
-            username=args['username'],
-            password=args['password'],
-            bankroll=args['bankroll']
-        )
-        db.session.add(new_owner)
-        db.session.commit()
-        owner_dict = new_owner.to_dict()
-        return owner_dict, 201
+class OwnerList(Resource):
+    def get(self):
+        owners = Owner.query.all()
+        owner_data = [owner.to_dict() for owner in owners]
+        return make_response(jsonify(owner_data), 200)
+    def post(self):
+        form = OwnerForm(request.form)
+        if form.validate():
+            new_owner = Owner(
+                first_name=form.first_name.data,
+                last_name=form.last_name.data,
+                email=form.email.data,
+                username=form.username.data,
+                password=form.password.data,
+                bankroll=form.bankroll.data
+            )
+            db.session.add(new_owner)
+            db.session.commit()
+            owner_dict = new_owner.to_dict()
+            return owner_dict, 201
+        else:
+            errors = form.errors
+            return {'errors': errors}, 400
+
 
 class OwnerByID(Resource):
     def get(self, owner_id):
