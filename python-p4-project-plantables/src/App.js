@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Pots from './Pots';
 import PlantCatalog from './PlantCatalog';
-import Login from './Login';
+// import Login from './Login';
 
 function App() {
   const [owners, setOwners] = useState([]);
@@ -28,9 +28,9 @@ function App() {
       .then((data) => setOwners(data));
   }, []); // Empty dependency array ensures this effect only runs once on component mount
 
-  if (!loggedIn) {
-    return <Login setLoggedIn={setLoggedIn} />;
-  }
+  // if (!loggedIn) {
+  //   return <Login setLoggedIn={setLoggedIn} />;
+  // }
 
   return (
     <div className="App">
