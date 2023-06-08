@@ -91,7 +91,7 @@ const Login = () => {
     axios
       .post("/owners", requestData, {
         withCredentials: true,
-        headers,
+        headers: headers,
       })
       .then((response) => {
         // Handle the new player creation response
