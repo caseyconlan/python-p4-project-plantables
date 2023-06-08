@@ -18,46 +18,64 @@
   margin-top: 20px;
 }
 
-.plant-catalog .plant-item {
-  width: 200px; /* Adjust this as needed */
-  height: 300px; /* Adjust this as needed */
-  overflow: hidden; /* Prevents the image from overflowing the div */
+.plant-catalog {
   display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column; /* Stack the child elements vertically */
+  flex-direction: column;
+  align-items: center;
 }
 
-.plant-catalog {
+.grid-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 1rem;
 }
 
-.plant-catalog .plant-item img {
-  width: 50%; /* This will make the image take the full width of the parent div */
-  height: 50%; /* This will make the image take the full height of the parent div */
-  object-fit: cover; /* This will make the image cover the entire area of the div, cropping it if necessary */
+.plant-item {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-}
-
-.plant-catalog div {
-  flex: 1 1 200px; /* Flexible layout so plant boxes adjust to the window width */
-  margin: 10px;
-  padding: 10px;
-  border: 2px solid #4caf50; /* A green border */
-  border-radius: 5px;
   text-align: center;
-  cursor: pointer; /* A hand cursor for clickable items */
-  transition: transform 0.3s; /* A smooth transition for hover effects */
-  width: 200px; /* Adjust this as needed */
-  height: 300px; /* Adjust this as needed */
-  overflow: hidden; /* Prevents the image from overflowing the div */
+  padding: 1rem;
+  border: 1px solid #ccc;
 }
 
-.plant-catalog div:hover {
-  transform: scale(1.05); /* Slightly enlarge plant boxes on hover */
+.pagination {
+  margin-top: 1rem;
 }
+
+.pagination button {
+  margin-right: 0.5rem;
+}
+
+.pagination span {
+  margin: 0 0.5rem;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.plant-item img {
+  width: 200px;
+  height: auto;
+}
+
+.plant-item h2 {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.plant-item p {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
 
 .plant {
   border: 2px solid #4caf50; /* A green border */
@@ -67,15 +85,6 @@
   width: 200px;
   text-align: center;
 }
-
-.plant-catalog-container {
-  max-width: 1200px; /* Adjust this as needed */
-  margin: 0 auto; /* This centers the grid in its container */
-}
-
-/* App.css */
-
-/* App.css */
 
 .pots .pot {
   border: 1px solid #004d00;
@@ -220,4 +229,50 @@ form button:hover {
 
 form h1 {
   margin-bottom: 1em;
+}
+
+.cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.close-button {
+  align-self: flex-end;
+  margin: 0.5rem;
+}
+
+.cart-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cart-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 200px;
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+
+.cart-item img {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+}
+
+.cart-item h3 {
+  margin-top: 0.5rem;
+}
+
+.cart-item p {
+  margin: 0.5rem 0;
+}
+
+.cart-item button {
+  margin-top: 0.5rem;
 }

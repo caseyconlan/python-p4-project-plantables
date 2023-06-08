@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Pots from './Pots';
 import PlantCatalog from './PlantCatalog';
 import Login from './Login';
-import Garden from './Garden';
+import GardenCurationForm from './GardenCurationForm';
+import Cart from './Cart';
 
 function App() {
   const [owners, setOwners] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [selectedPlants, setSelectedPlants] = useState(new Array(7).fill(null));
+  const [showCatalog, setShowCatalog] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [showCart, setShowCart] = useState(false);
 
   const selectPlant = (plant) => {
     setSelectedPlants((prev) => {
@@ -22,21 +25,87 @@ function App() {
     });
   };
 
+  const addToCart = (plant) => {
+    setSelectedPlants((prev) => {
+      const newPlants = [...prev];
+      const firstEmptySlot = newPlants.findIndex((p) => p === null);
+      if (firstEmptySlot !== -1) {
+        newPlants[firstEmptySlot] = plant;
+      }
+      return newPlants;
+    });
+  };
+
+  const removeFromCart = (index) => {
+    setSelectedPlants((prev) => {
+      const newPlants = [...prev];
+      newPlants[index] = null;
+      return newPlants;
+    });
+  };
+
+  const placeOrder = () => {
+    // Send the selectedPlants array to the server to store in the database
+    fetch('/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(selectedPlants),
+    })
+      .then((response) => {
+        setSelectedPlants(new Array(7).fill(null));
+        console.log('Order placed successfully!');
+      })
+      .catch((error) => {
+        console.error('Error placing order:', error);
+      });
+  };
+
   useEffect(() => {
-    fetch('/owners') // Sends a GET request to '/owners' on the Flask server
+    fetch('/owners')
       .then((response) => response.json())
       .then((data) => setOwners(data));
-  }, []); // Empty dependency array ensures this effect only runs once on component mount
+  }, []);
 
   if (!loggedIn) {
     return <Login setLoggedIn={setLoggedIn} />;
   }
 
+  const handleCatalogClick = () => {
+    setShowCatalog(true);
+  };
+
+  const handleFormClick = () => {
+    setShowForm(true);
+  };
+
+  const handleCartClick = () => {
+    setShowCart(true);
+  };
+
+  const handleClose = () => {
+    setShowCatalog(false);
+    setShowForm(false);
+    setShowCart(false);
+  };
+
   return (
     <div className="App">
       <h1>Plantables</h1>
-      <Garden selectedPlants={selectedPlants} />
-      <PlantCatalog selectPlant={selectPlant} />
+      {showCatalog ? (
+        <PlantCatalog selectPlant={selectPlant} addToCart={addToCart} onClose={handleClose} />
+      ) : showForm ? (
+        <GardenCurationForm onClose={handleClose} />
+      ) : showCart ? (
+        <Cart selectedPlants={selectedPlants} onSubmit={placeOrder} onRemove={removeFromCart} onClose={handleClose} />
+      ) : (
+        <>
+                    <button onClick={handleCatalogClick}>Catalog</button>
+          <button onClick={handleFormClick}>Garden Curation Form</button>
+          <button onClick={handleCartClick}>Cart</button>
+        </>
+      )}
     </div>
   );
 }

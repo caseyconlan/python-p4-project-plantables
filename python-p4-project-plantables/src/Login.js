@@ -180,8 +180,8 @@ const Login = ({ setLoggedIn }) => {
       <div className="title">Welcome to Plantables!</div>
       <div className="description">Grow your plants with love</div>
       <div>
-        <button className="loginButton" onClick={() => handleFormType("login")}>Returning Player</button>
-        <button className="newButton" onClick={() => handleFormType("newPlayer")}>New Player</button>
+        <button className="loginButton" onClick={() => handleFormType("login")}>Returning Customer</button>
+        <button className="newButton" onClick={() => handleFormType("newPlayer")}>New Customer</button>
         {formType === "login" && renderLoginForm()}
         {formType === "newPlayer" && renderNewPlayerForm()}
       </div>
