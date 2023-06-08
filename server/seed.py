@@ -15,12 +15,13 @@ from app import app
 from models import db
 
 def create_plants():
+    Plant.query.delete()
     plants = []
     for _ in range(50):
         name = "Plant " + str(random.randint(1, 100))
         plant = Plant(
             name=name,
-            image='images/smallerjadeplant.jpg',
+            image='/images/smallerjadeplant.jpg',
             price=random.uniform(10.0, 50.0),
             size=random.choice(['small', 'medium', 'large']),
             light_req=random.choice(['low', 'medium', 'high']),
