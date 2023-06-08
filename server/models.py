@@ -1,4 +1,5 @@
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy import Enum
 from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -46,7 +47,7 @@ class Plant(db.Model, SerializerMixin):
     image = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
     size = db.Column(db.String(50))
-    light_req = db.Column(db.String(100))
+    light_req = db.Column(Enum('low', 'medium', 'high', name='light_requirement'), nullable=False)
     water_req = db.Column(db.String(100))
     fertilizer_req = db.Column(db.String(100))
     pests = db.Column(db.Boolean)
