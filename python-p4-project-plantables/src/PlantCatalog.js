@@ -63,16 +63,16 @@ function PlantCatalog({ selectPlant, addToCart, onClose }) {
                 }
               }}
             />
-            <button onClick={() => handleAddToCart(plant, plant.quantity || 1)}>Add to Cart</button>
+            <button class="button-1" role="button" onClick={() => handleAddToCart(plant, plant.quantity || 1)}>Add to Cart</button>
           </div>
         ))}
       </div>
       <div className="pagination">
-        <button disabled={currentPage === 1} onClick={handlePrevPage}>
+        <button class="button-1" role="button" disabled={currentPage === 1} onClick={handlePrevPage}>
           Prev
         </button>
         <span>{currentPage}</span>
-        <button disabled={currentPage === totalPages} onClick={handleNextPage}>
+        <button class="button-1" role="button" disabled={currentPage === totalPages} onClick={handleNextPage}>
           Next
         </button>
       </div>

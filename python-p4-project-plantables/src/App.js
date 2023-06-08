@@ -74,13 +74,19 @@ function App() {
 
   const handleCatalogClick = () => {
     setShowCatalog(true);
+    setShowForm(false);
+    setShowCart(false);
   };
 
   const handleFormClick = () => {
+    setShowCatalog(false);
     setShowForm(true);
+    setShowCart(false);
   };
 
   const handleCartClick = () => {
+    setShowCatalog(false);
+    setShowForm(false);
     setShowCart(true);
   };
 
@@ -101,9 +107,9 @@ function App() {
         <Cart selectedPlants={selectedPlants} onSubmit={placeOrder} onRemove={removeFromCart} onClose={handleClose} />
       ) : (
         <>
-                    <button onClick={handleCatalogClick}>Catalog</button>
-          <button onClick={handleFormClick}>Garden Curation Form</button>
-          <button onClick={handleCartClick}>Cart</button>
+          <button class="button-1" role="button" onClick={handleCatalogClick}>Catalog</button>
+          <button class="button-1" role="button" onClick={handleFormClick}>Garden Curation Form</button>
+          <button class="button-1" role="button" onClick={handleCartClick}>Cart</button>
         </>
       )}
     </div>

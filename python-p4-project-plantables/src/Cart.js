@@ -10,13 +10,13 @@ function Cart({ selectedPlants, onSubmit, onClose }) {
           {plant && (
             <div>
               <span>{plant.name}</span>
-              <button onClick={() => onSubmit(index)}>Remove</button>
+              <button class="button-1" role="button" onClick={() => onSubmit(index)}>Remove</button>
             </div>
           )}
         </div>
       ))}
-      <button onClick={onSubmit}>Place Order</button>
-      <button onClick={onClose}>Close</button>
+      <button class="button-1" role="button" onClick={onSubmit}>Place Order</button>
+      <button class="button-1" role="button" onClick={onClose}>Close</button>
     </div>
   );
 }
