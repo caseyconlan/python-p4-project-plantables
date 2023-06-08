@@ -1,9 +1,9 @@
-// App.js
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Pots from './Pots';
 import PlantCatalog from './PlantCatalog';
 import Login from './Login';
+import Garden from './Garden';
 
 function App() {
   const [owners, setOwners] = useState([]);
@@ -31,11 +31,15 @@ function App() {
   if (!loggedIn) {
     return <Login setLoggedIn={setLoggedIn} />;
   }
+  
+  return (
+    <Garden selectedPlants={selectedPlants} selectPlant={selectPlant} setLoggedIn={setLoggedIn} />
+  );
 
   return (
     <div className="App">
       <h1>Plantables</h1>
-      <Pots selectedPlants={selectedPlants} />
+      <Garden selectedPlants={selectedPlants} />
       <PlantCatalog selectPlant={selectPlant} />
     </div>
   );

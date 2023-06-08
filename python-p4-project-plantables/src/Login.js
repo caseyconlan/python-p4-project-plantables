@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const Login = () => {
+const Login = ({ setLoggedIn }) => {
   const [formType, setFormType] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -9,7 +9,6 @@ const Login = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
-  const [LoggedIn, setLoggedIn] = useState(false);
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   useEffect(() => {
@@ -67,9 +66,7 @@ const Login = () => {
       console.log("Password and confirmation do not match");
       return;
     }
-    console.log(
-      `New Player ${firstName} ${lastName} Created! Username: ${username}`
-    );
+    console.log(`New Player ${firstName} ${lastName} Created! Username: ${username}`);
 
     const requestData = {
       first_name: firstName,
@@ -95,6 +92,7 @@ const Login = () => {
       })
       .then((response) => {
         // Handle the new player creation response
+        setLoggedIn(true); // Assuming that creating a new player logs them in
       })
       .catch((error) => {
         // Handle the new player creation error
@@ -178,18 +176,17 @@ const Login = () => {
   );
 
   return (
-    <><div className="title">Welcome to Plantables!</div>
-    <div className="description">Grow your plants with love</div>
-    <div>
-      <button className="loginButton" onClick={() => handleFormType("login")}>Returning Player</button>
-      <button className="newButton" onClick={() => handleFormType("newPlayer")}>New Player</button>
-      {formType === "login" && renderLoginForm()}
-      {formType === "newPlayer" && renderNewPlayerForm()}
-    </div>
+    <>
+      <div className="title">Welcome to Plantables!</div>
+      <div className="description">Grow your plants with love</div>
+      <div>
+        <button className="loginButton" onClick={() => handleFormType("login")}>Returning Player</button>
+        <button className="newButton" onClick={() => handleFormType("newPlayer")}>New Player</button>
+        {formType === "login" && renderLoginForm()}
+        {formType === "newPlayer" && renderNewPlayerForm()}
+      </div>
     </>
   );
 };
 
-export default function LoginWrapper() {
-  return <Login />;
-}
+export default Login;
