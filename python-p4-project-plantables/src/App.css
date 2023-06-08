@@ -122,16 +122,17 @@
   font-weight: bold;
   display: block; /* Ensure the title is on its own line */
   margin-bottom: 0px; /* Add some spacing between the title and description */
-  margin-top: 700px;
+  margin-top: 500px;
   align-items: center;
   justify-content: center;
 }
 
 .description {
   font-family: 'Amatic SC', cursive;
-  font-size: 36px;
+  font-size: 42px;
+  font-weight: bold;
   display: block; /* Ensure the description is on its own line */
-  margin-bottom: 0px;
+  margin-bottom: 450px;
   align-items: center;
   justify-content: center;
 }
@@ -144,22 +145,22 @@
   top: -20px;
 }
 
-.ReturningPlayerButton {
+.loginButton {
   display: block;
   align-items: center;
   justify-content: center;
   position: relative;
   bottom: 300px;
-  right: 10px;
+  left: 200px;
 }
 
-.NewPlayerButton {
+.newButton {
   display: block;
   align-items: center;
   justify-content: center;
   position: relative;
   bottom: 300px;
-  left: 10px;
+  left: 215px;
 }
 
 body {
