@@ -9,6 +9,8 @@ const Login = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
+  const [LoggedIn, setLoggedIn] = useState(false);
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   useEffect(() => {
     // Fetch the CSRF token from the backend
@@ -29,23 +31,30 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(`Username: ${username}, Password: ${password}`);
+    console.log(`Login Successful`);
 
-    // Include the CSRF token in the request headers
+    const requestData = {
+      username,
+      password,
+    };
+
+    const headers = {
+      "X-CSRF-Token": csrfToken,
+      "Content-Type": "application/json",
+    };
+
+    if (csrfToken) {
+      headers["X-CSRF-Token"] = csrfToken;
+    }
+
     axios
-      .post(
-        "/login",
-        { username, password },
-        {
-          withCredentials: true,
-          headers: {
-            "X-CSRF-Token": csrfToken,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      .post("/login", requestData, {
+        withCredentials: true,
+        headers,
+      })
       .then((response) => {
         // Handle the login response
+        setLoggedIn(true);
       })
       .catch((error) => {
         // Handle the login error
@@ -54,29 +63,36 @@ const Login = () => {
 
   const handleNewPlayer = (e) => {
     e.preventDefault();
+    if (password !== passwordConfirmation) {
+      console.log("Password and confirmation do not match");
+      return;
+    }
     console.log(
-      `First Name: ${firstName}, Last Name: ${lastName}, Email: ${email}, Username: ${username}, Password: ${password}`
+      `New Player ${firstName} ${lastName} Created! Username: ${username}`
     );
 
-    // Include the CSRF token in the request headers
+    const requestData = {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      username,
+      password,
+    };
+
+    const headers = {
+      "X-CSRF-Token": csrfToken,
+      "Content-Type": "application/json",
+    };
+
+    if (csrfToken) {
+      headers["X-CSRF-Token"] = csrfToken;
+    }
+
     axios
-      .post(
-        "/owners",
-        {
-          first_name: firstName,
-          last_name: lastName,
-          email,
-          username,
-          password,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "X-CSRF-Token": csrfToken,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      .post("/owners", requestData, {
+        withCredentials: true,
+        headers,
+      })
       .then((response) => {
         // Handle the new player creation response
       })
@@ -147,6 +163,14 @@ const Login = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+        />
+      </label>
+      <label>
+        Confirm Password:
+        <input
+          type="password"
+          value={passwordConfirmation}
+          onChange={(e) => setPasswordConfirmation(e.target.value)}
         />
       </label>
       <button type="submit">Create New Player</button>

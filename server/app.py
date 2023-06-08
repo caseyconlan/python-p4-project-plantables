@@ -3,13 +3,15 @@
 # Standard library imports
 
 # Remote library imports
-from flask import Flask, jsonify, request, make_response, abort
+from flask import Flask, jsonify, request, make_response, abort, session, redirect, url_for
 from flask_restful import Resource
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField
+from wtforms import StringField, IntegerField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Email, Length
 from flask_wtf.csrf import CSRFProtect, generate_csrf
+from werkzeug.datastructures import MultiDict
+
 
 
 # Local imports
@@ -33,7 +35,7 @@ class CreateOwnerForm(FlaskForm):
     last_name = StringField('Last Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     username = StringField('Username', validators=[DataRequired()])
-    password = StringField('Password', validators=[
+    password = PasswordField('Password', validators=[
                            DataRequired(), Length(min=6)])
     submit = SubmitField('Create Owner')
 
@@ -44,6 +46,28 @@ class LoginForm(FlaskForm):
                            DataRequired()])
     submit = SubmitField('Login')
 
+class LoginResource(Resource):
+    def post(self):
+        if request.headers.get('Content-Type') == 'application/json':
+            data = request.get_json()
+            username = data.get('username')
+            password = data.get('password')
+        else:
+            username = request.form.get('username')
+            password = request.form.get('password')
+
+        owner = Owner.query.filter_by(username=username).first()
+        if owner and owner.check_password(password):
+            # Password is correct, proceed with authentication and session handling
+            session['user_id'] = owner.id
+            # ...
+
+            return {'message': 'Login successful'}
+        else:
+            # Invalid credentials
+            return {'message': 'Invalid username or password'}
+
+api.add_resource(LoginResource, '/login')
 
 class OwnerList(Resource):
     def get(self):
@@ -52,7 +76,13 @@ class OwnerList(Resource):
         return make_response(jsonify(owner_data), 200)
 
     def post(self):
-        form = CreateOwnerForm(request.form)
+        json_data = request.get_json()
+        form_data = request.form
+
+        if json_data:
+            form = CreateOwnerForm(MultiDict(json_data))
+        else:
+            form = CreateOwnerForm(form_data)
 
         if form.validate():
             new_owner = Owner(
@@ -60,8 +90,9 @@ class OwnerList(Resource):
                 last_name=form.last_name.data,
                 email=form.email.data,
                 username=form.username.data,
-                password=form.password.data,
+                # password=form.password.data,
                 bankroll=1000)
+            new_owner.set_password(form.password.data)
             try:
                 db.session.add(new_owner)
                 db.session.commit()
@@ -69,10 +100,11 @@ class OwnerList(Resource):
                 return owner_dict, 201
             except Exception as e:
                 print(e)
-                return abort(422, {"error": "Validation Failed"})
+                return abort(500, {"error": "Internal Server Error"})
         else:
             errors = form.errors
-            return {'errors': errors}, 400
+            print(errors)  # Print form validation errors for debugging
+            return {'errors': errors}, 422
 
 
 class OwnerByID(Resource):
