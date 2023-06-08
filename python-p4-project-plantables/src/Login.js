@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import './App.css';
-import bgImage from './images/Background.jpeg';
 
 const Login = () => {
   const [formType, setFormType] = useState(null);
@@ -129,10 +127,11 @@ const Login = () => {
       </label>
       <label>
         Email:
-        <input         type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </label>
       <label>
         Username:
@@ -154,28 +153,19 @@ const Login = () => {
     </form>
   );
 
-  // const loginStyle = {
-  //   backgroundImage: `url(${bgImage})`,
-  //   backgroundRepeat: 'no-repeat',
-  //   backgroundSize: 'cover',
-  //   backgroundPosition: 'center',
-  //   height: '100vh',
-  //   display: 'flex',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // };
-
   return (
-    <><h1 className="title">Welcome to Plantables</h1>
-    <h2 className="description">Grow your plants with love!</h2>
-    <div className="login">
-        <button className="ReturningPlayerButton" onClick={() => handleFormType("login")}>Returning Player</button>
-        <button className="NewPlayerButton" onClick={() => handleFormType("newPlayer")}>New Player</button>
-        {formType === "login" && renderLoginForm()}
-        {formType === "newPlayer" && renderNewPlayerForm()}
-      </div></>
+    <><div className="title">Welcome to Plantables!</div>
+    <div className="description">Grow your plants with love</div>
+    <div>
+      <button className="loginButton" onClick={() => handleFormType("login")}>Returning Player</button>
+      <button className="newButton" onClick={() => handleFormType("newPlayer")}>New Player</button>
+      {formType === "login" && renderLoginForm()}
+      {formType === "newPlayer" && renderNewPlayerForm()}
+    </div>
+    </>
   );
 };
 
-export default Login;
-
+export default function LoginWrapper() {
+  return <Login />;
+}
