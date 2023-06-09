@@ -1,25 +1,44 @@
-// Cart.js
-
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
-function Cart({ selectedPlants, onSubmit, onClose }) {
+function Cart({ selectedPlants, placeOrder, removeFromCart }) {
+  const history = useHistory();
+
+  const handleRemove = (index) => {
+    removeFromCart(index);
+  };  
+
+  const handlePlaceOrder = () => {
+    placeOrder();
+    history.push('/');
+  };
+
+  const handleClose = () => {
+    history.push('/');
+  };
+
   return (
-    <div className="cart">
-      <h2>Cart</h2>
-      {selectedPlants.map((plant, index) => (
-        <div key={index}>
-          {plant && (
-            <div>
-              <span>{plant.name}</span>
-              <button class="button-1" role="button" onClick={() => onSubmit(index)}>Remove</button>
+    <div className="My-Cart">
+      <h2>My Cart</h2>
+      <div className="cart">
+        {selectedPlants.map((item, index) => (
+          item && (
+            <div key={index} className="plant-details">
+              <img className="cart-img" src={process.env.PUBLIC_URL + item.plant.image} alt={item.plant.name} />
+              <span>{item.plant.name}</span>
+              <span>Quantity: {item.quantity}</span>
+              <span>Cost: ${item.plant.price * item.quantity}</span>
+              <button className="button-1" role="button" onClick={() => handleRemove(index)}>Remove</button>
             </div>
-          )}
+          )
+        ))}
+        <div className="cart-buttons">
+          <button className="button-1" role="button" onClick={handlePlaceOrder}>Place Order</button>
+          <button className="button-1" role="button" onClick={handleClose}>Close</button>
         </div>
-      ))}
-      <button class="button-1" role="button" onClick={onSubmit}>Place Order</button>
-      <button class="button-1" role="button" onClick={onClose}>Close</button>
+      </div>
     </div>
-  );
+  );  
 }
 
 export default Cart;
