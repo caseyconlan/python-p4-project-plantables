@@ -29,8 +29,8 @@ function PlantCatalog({ selectPlant, addToCart }) {
   }, []);
 
   const handleAddToCart = (plant, quantity) => {
-    addToCart(plant, quantity);
-  };
+    addToCart({ plant, quantity });
+  };  
 
   // Get current plants
   const indexOfLastPlant = currentPage * plantsPerPage;
@@ -71,7 +71,7 @@ function PlantCatalog({ selectPlant, addToCart }) {
                 }
               }}
             />
-            <button class="button-1" role="button" onClick={() => handleAddToCart(plant, plant.quantity || 1)}>Add to Cart</button>
+            <button className="button-1" role="button" onClick={() => handleAddToCart(plant, plant.quantity || 1)}>Add to Cart</button>
           </div>
         ))}
       </div>
