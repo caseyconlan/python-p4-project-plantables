@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+from decimal import Decimal
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
@@ -19,6 +20,9 @@ images_path = os.path.join(base_path, '../python-p4-project-plantables/public/im
 from app import app
 from models import db
 
+
+
+
 def create_plants():
     Plant.query.delete()
     plants = []
@@ -32,19 +36,22 @@ def create_plants():
         # Extract the name of the image file (without extension) to use as the plant name
         name = os.path.splitext(image_file)[0]
 
+        price = Decimal(random.uniform(10.0, 50.0)).quantize(Decimal('0.00')).__str__()
+
         plant = Plant(
             name=name,
             image=image_path,
-            price=random.uniform(10.0, 50.0),
+            price=price,
             size=random.choice(['small', 'medium', 'large']),
             light_req=random.choice(['low', 'medium', 'high']),
-            water_req=random.randint(1, 5),
-            fertilizer_req=random.randint(1, 5),
+            water_req=random.choice(['low', 'medium', 'high']),
+            fertilizer_req=random.choice(['low', 'medium', 'high']),
             pests=False
         )
         plants.append(plant)
 
     return plants
+
 
 
 if __name__ == '__main__':
