@@ -1,6 +1,5 @@
-// App.js
-
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
 import './App.css';
 import PlantCatalog from './PlantCatalog';
 import Login from './Login';
@@ -11,9 +10,6 @@ function App() {
   const [owners, setOwners] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [selectedPlants, setSelectedPlants] = useState(new Array(7).fill(null));
-  const [showCatalog, setShowCatalog] = useState(false);
-  const [showForm, setShowForm] = useState(false);
-  const [showCart, setShowCart] = useState(false);
 
   const selectPlant = (plant) => {
     setSelectedPlants((prev) => {
@@ -70,51 +66,39 @@ function App() {
       .then((data) => setOwners(data));
   }, []);
 
+  const history = useHistory();
+
+  const handleClose = () => {
+    history.push('/');
+  };
+
   if (!loggedIn) {
     return <Login setLoggedIn={setLoggedIn} />;
   }
 
-  const handleCatalogClick = () => {
-    setShowCatalog(true);
-    setShowForm(false);
-    setShowCart(false);
-  };
-
-  const handleFormClick = () => {
-    setShowCatalog(false);
-    setShowForm(true);
-    setShowCart(false);
-  };
-
-  const handleCartClick = () => {
-    setShowCatalog(false);
-    setShowForm(false);
-    setShowCart(true);
-  };
-
-  const handleClose = () => {
-    setShowCatalog(false);
-    setShowForm(false);
-    setShowCart(false);
-  };
-
   return (
-    <div className="App">
-      <h1>Plantables</h1>
-      {showCatalog ? (
-        <PlantCatalog selectPlant={selectPlant} addToCart={addToCart} onClose={handleClose} />
-      ) : showForm ? (
-        <GardenCurationForm onClose={handleClose} />
-      ) : showCart ? (
-        <Cart selectedPlants={selectedPlants} onSubmit={placeOrder} onRemove={removeFromCart} onClose={handleClose} />
-      ) : (
-        <>
-          <button class="button-1" role="button" onClick={handleCatalogClick}>Catalog</button>
-          <button class="button-1" role="button" onClick={handleFormClick}>Garden Curation Form</button>
-          <button class="button-1" role="button" onClick={handleCartClick}>Cart</button>
-        </>
-      )}
-    </div>
+    <Router>
+      <div className="App">
+        <h1>Plantables</h1>
+        <nav>
+          <Link className="button-1" to="/catalog">Catalog</Link>
+          <Link className="button-1" to="/form">Garden Curation Form</Link>
+          <Link className="button-1" to="/cart">Cart</Link>
+        </nav>
+
+        <Switch>
+          <Route path="/catalog">
+            <PlantCatalog selectPlant={selectPlant} addToCart={addToCart} />
+          </Route>
+          <Route path="/form">
+            <GardenCurationForm onClose={handleClose} />
+          </Route>
+          <Route path="/cart">
+            <Cart selectedPlants={selectedPlants} placeOrder={placeOrder} removeFromCart={removeFromCart} />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

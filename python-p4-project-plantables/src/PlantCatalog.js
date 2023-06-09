@@ -2,12 +2,19 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import './App.css';
 
-function PlantCatalog({ selectPlant, addToCart, onClose }) {
+function PlantCatalog({ selectPlant, addToCart }) {
   const [plantCatalog, setPlantCatalog] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [plantsPerPage] = useState(15);
+
+  const history = useHistory();
+
+  const handleClose = () => {
+    history.push('/');
+  };
 
   useEffect(() => {
     axios
@@ -22,7 +29,7 @@ function PlantCatalog({ selectPlant, addToCart, onClose }) {
   }, []);
 
   const handleAddToCart = (plant, quantity) => {
-    addToCart({ ...plant, quantity });
+    addToCart(plant, quantity);
   };
 
   // Get current plants
@@ -43,7 +50,7 @@ function PlantCatalog({ selectPlant, addToCart, onClose }) {
 
   return (
     <div className="plant-catalog">
-      <button className="close-button" onClick={onClose}>
+      <button className="close-button" onClick={handleClose}>
         Close
       </button>
       <div className="grid-container">
