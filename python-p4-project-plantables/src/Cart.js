@@ -6,7 +6,7 @@ function Cart({ selectedPlants, placeOrder, removeFromCart }) {
 
   const handleRemove = (index) => {
     removeFromCart(index);
-  };  
+  };
 
   const handlePlaceOrder = () => {
     placeOrder();
@@ -22,9 +22,11 @@ function Cart({ selectedPlants, placeOrder, removeFromCart }) {
       <h2>My Cart</h2>
       <div className="cart">
         {selectedPlants.map((item, index) => (
-          item && (
+          item && item.plant && (
             <div key={index} className="plant-details">
-              <img className="cart-img" src={process.env.PUBLIC_URL + item.plant.image} alt={item.plant.name} />
+              {item.plant.image && (
+                <img className="cart-img" src={process.env.PUBLIC_URL + item.plant.image} alt={item.plant.name} />
+              )}
               <span>{item.plant.name}</span>
               <span>Quantity: {item.quantity}</span>
               <span>Cost: ${item.plant.price * item.quantity}</span>
@@ -38,7 +40,7 @@ function Cart({ selectedPlants, placeOrder, removeFromCart }) {
         </div>
       </div>
     </div>
-  );  
+  );
 }
 
 export default Cart;

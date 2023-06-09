@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import './App.css';
 import PlantCatalog from './PlantCatalog';
 import Login from './Login';
@@ -66,12 +66,6 @@ function App() {
       .then((data) => setOwners(data));
   }, []);
 
-  const history = useHistory();
-
-  const handleClose = () => {
-    history.push('/');
-  };
-
   if (!loggedIn) {
     return <Login setLoggedIn={setLoggedIn} />;
   }
@@ -81,20 +75,30 @@ function App() {
       <div className="App">
         <h1>Plantables</h1>
         <nav>
-          <Link className="button-1" to="/catalog">Catalog</Link>
-          <Link className="button-1" to="/form">Garden Curation Form</Link>
-          <Link className="button-1" to="/cart">Cart</Link>
+          <Link className="button-1" to="/catalog">
+            Catalog
+          </Link>
+          <Link className="button-1" to="/form">
+            Garden Curation Form
+          </Link>
+          <Link className="button-1" to="/cart">
+            Cart
+          </Link>
         </nav>
 
         <Switch>
-          <Route path="/catalog">
-            <PlantCatalog selectPlant={selectPlant} addToCart={addToCart} />
+        <Route path="/catalog">
+          <PlantCatalog selectPlant={selectPlant} addToCart={addToCart} />
           </Route>
           <Route path="/form">
-            <GardenCurationForm onClose={handleClose} />
+            <GardenCurationForm />
           </Route>
           <Route path="/cart">
-            <Cart selectedPlants={selectedPlants} placeOrder={placeOrder} removeFromCart={removeFromCart} />
+            <Cart
+              selectedPlants={selectedPlants}
+              removeFromCart={removeFromCart}
+              placeOrder={placeOrder}
+            />
           </Route>
         </Switch>
       </div>
