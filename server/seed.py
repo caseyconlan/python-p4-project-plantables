@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Standard library imports
+import os
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
@@ -10,6 +10,11 @@ from faker import Faker
 import random
 
 api = Api(app)
+
+# Get the absolute path of the public/images folder
+base_path = os.path.dirname(os.path.abspath(__file__))
+images_path = os.path.join(base_path, '../python-p4-project-plantables/public/images')
+
 # Local imports
 from app import app
 from models import db
@@ -17,11 +22,19 @@ from models import db
 def create_plants():
     Plant.query.delete()
     plants = []
-    for _ in range(50):
-        name = "Plant " + str(random.randint(1, 100))
+
+    # Get the list of image files in the public/images folder
+    image_files = os.listdir(images_path)
+
+    for image_file in image_files:
+        image_path = os.path.join(images_path, image_file)
+
+        # Extract the name of the image file (without extension) to use as the plant name
+        name = os.path.splitext(image_file)[0]
+
         plant = Plant(
             name=name,
-            image='/images/smallerjadeplant.jpg',
+            image=image_path,
             price=random.uniform(10.0, 50.0),
             size=random.choice(['small', 'medium', 'large']),
             light_req=random.choice(['low', 'medium', 'high']),
@@ -40,34 +53,3 @@ if __name__ == '__main__':
         plants = create_plants()
         db.session.add_all(plants)
         db.session.commit()
-
-
-
-
-# if __name__ == '__main__':
-#     fake = Faker()
-#     with app.app_context():
-#         print("Starting seed...")
-#         # Seed code goes here!
-# import csv
-
-# # Specify the number of user records you want to generate
-# num_users = 100
-
-# # Open the seed file in write mode
-# with open('seed_file.csv', 'w', newline='') as csvfile:
-#     writer = csv.writer(csvfile)
-
-#     # Write the header row
-# writer.writerow(['username', 'password', 'first_name', 'last_name', 'email','commit_message'])
-
-# # Generate user data and write to the seed file
-# for _ in range(num_users):
-#     username = fake.user_name()
-#     password = fake.password()
-#     first_name = fake.first_name()
-#     last_name = fake.last_name()
-#     email = fake.email()
-
-#     writer.writerow([username, password, first_name, last_name, email, 'Initial commit'])
-    
