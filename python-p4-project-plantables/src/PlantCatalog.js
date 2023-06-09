@@ -56,7 +56,10 @@ function PlantCatalog({ selectPlant, addToCart }) {
       <div className="grid-container">
         {currentPlants.map((plant, index) => (
           <div className="plant-item" key={index}>
-            <img src={process.env.PUBLIC_URL + plant.image} alt={plant.name} />
+            <img
+              src={`${process.env.PUBLIC_URL}${plant.image}`}
+              alt={plant.name}
+            />
             <h2>{plant.name}</h2>
             <p>Price: {plant.price}</p>
             <p>Light: {plant.light_req}</p>
@@ -71,16 +74,32 @@ function PlantCatalog({ selectPlant, addToCart }) {
                 }
               }}
             />
-            <button class="button-1" role="button" onClick={() => handleAddToCart(plant, plant.quantity || 1)}>Add to Cart</button>
+            <button
+              class="button-1"
+              role="button"
+              onClick={() => handleAddToCart(plant, plant.quantity || 1)}
+            >
+              Add to Cart
+            </button>
           </div>
         ))}
       </div>
       <div className="pagination">
-        <button class="button-1" role="button" disabled={currentPage === 1} onClick={handlePrevPage}>
+        <button
+          class="button-1"
+          role="button"
+          disabled={currentPage === 1}
+          onClick={handlePrevPage}
+        >
           Prev
         </button>
         <span>{currentPage}</span>
-        <button class="button-1" role="button" disabled={currentPage === totalPages} onClick={handleNextPage}>
+        <button
+          class="button-1"
+          role="button"
+          disabled={currentPage === totalPages}
+          onClick={handleNextPage}
+        >
           Next
         </button>
       </div>

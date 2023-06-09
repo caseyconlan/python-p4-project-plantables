@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import urllib.parse
+from models import db
+from app import app
 import os
 from decimal import Decimal
 from flask import Flask
@@ -10,17 +13,15 @@ from config import app, db
 from faker import Faker
 import random
 
+
 api = Api(app)
 
 # Get the absolute path of the public/images folder
 base_path = os.path.dirname(os.path.abspath(__file__))
-images_path = os.path.join(base_path, '../python-p4-project-plantables/public/images')
+images_path = os.path.join(
+    base_path, '../python-p4-project-plantables/public/images')
 
 # Local imports
-from app import app
-from models import db
-
-
 
 
 def create_plants():
@@ -34,13 +35,19 @@ def create_plants():
         image_path = os.path.join(images_path, image_file)
 
         # Extract the name of the image file (without extension) to use as the plant name
-        name = os.path.splitext(image_file)[0]
+        # Extract the name of the image file (without extension) to use as the plant name
+        name = os.path.splitext(image_file)[0].replace('-', ' ')
+        name_with_dashes = os.path.splitext(image_file)[0]
 
-        price = Decimal(random.uniform(10.0, 50.0)).quantize(Decimal('0.00')).__str__()
 
+        price = Decimal(random.uniform(10.0, 50.0)).quantize(
+            Decimal('0.00')).__str__()
+        url = urllib.parse.quote(
+            f"/images/{name_with_dashes}{os.path.splitext(image_file)[1]}")
+        print(url)    
         plant = Plant(
             name=name,
-            image=image_path,
+            image=url,
             price=price,
             size=random.choice(['small', 'medium', 'large']),
             light_req=random.choice(['low', 'medium', 'high']),
@@ -51,7 +58,6 @@ def create_plants():
         plants.append(plant)
 
     return plants
-
 
 
 if __name__ == '__main__':
