@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #e8f5e9; /* A light green background */
+  background-color: #ffffff; /* A light green background */
   font-family: Arial, sans-serif;
   color: #1b5e20; /* A dark green text color */
   padding: 20px;
@@ -36,7 +36,7 @@
   align-items: center;
   text-align: center;
   padding: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #ffffff;
 }
 
 .pagination {
@@ -62,13 +62,15 @@
 }
 
 .plant-item img {
-  width: 200px;
+  width: 150px;
   height: auto;
 }
 
 .plant-item h2 {
   margin-top: 10px;
   font-size: 18px;
+  text-align: center;
+  justify-content: center;
 }
 
 .plant-item p {
@@ -88,7 +90,7 @@
 
 .pots .pot {
   border: 1px solid #004d00;
-  background-color: #d2f3d2;
+  background-color: #ffffff;
   margin: 10px;
   padding: 10px;
   width: 150px;
@@ -231,19 +233,15 @@ form h1 {
   margin-bottom: 1em;
 }
 
-.cart {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .close-button {
   align-self: flex-end;
   margin: 0.5rem;
 }
 
-.cart-items {
-  display: flex;
+.cart {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
@@ -256,7 +254,7 @@ form h1 {
   text-align: center;
   width: 200px;
   padding: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #ffffff;
 }
 
 .cart-item img {
@@ -304,6 +302,10 @@ form h1 {
   -webkit-user-select: none;
   touch-action: manipulation;
   margin-bottom: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 5px;
+  justify-content: center;
 }
 
 .button-1:hover,
@@ -335,11 +337,37 @@ form h1 {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  margin-bottom: 500px;
-  margin-left: 200px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-left: 10px
 }
 
 .button-2:hover,
 .button-2:focus {
   background-color: #f40488;
+}
+
+.plant-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover; /* This will ensure that the image scales correctly */
+}
+
+.My-Cart {
+  margin-top: 10px;
+  font-size: 18px;
+  text-align: center;
+  justify-content: center;
+}
+
+.cart-buttons {
+  text-align: center;
+  justify-content: center;
 }

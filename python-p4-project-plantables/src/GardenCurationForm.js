@@ -1,8 +1,7 @@
-// GardenCurationForm.js
-
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useHistory } from 'react-router-dom';
 
 const GardenCurationForm = ({ onClose }) => {
   const validationSchema = Yup.object().shape({
@@ -26,8 +25,20 @@ const GardenCurationForm = ({ onClose }) => {
   };
 
   const handleSubmit = (values) => {
-    // You can perform any necessary actions with the form values here
-    console.log(values);
+    console.log(values); // Example: Log the form values
+    // Perform necessary actions with the form values
+  };
+
+  const handleFormSubmit = (values, { setSubmitting }) => {
+    handleSubmit(values);
+    setSubmitting(false);
+    onClose(); // Assuming you want to close the form after submission
+  };
+
+  const history = useHistory();
+
+  const handleClose = () => {
+    history.push('/');
   };
 
   return (
@@ -36,15 +47,15 @@ const GardenCurationForm = ({ onClose }) => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        <Form>
+        onSubmit={handleFormSubmit}
+    >
+        {({ isSubmitting }) => (
+        <Form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name">Name:</label>
             <Field type="text" id="name" name="name" />
             <ErrorMessage name="name" component="div" className="error" />
           </div>
-
           <div>
             <label htmlFor="email">Email:</label>
             <Field type="email" id="email" name="email" />
@@ -102,7 +113,7 @@ const GardenCurationForm = ({ onClose }) => {
                   value="leafyPlants"
                 />
                 Leafy Plants
-              </label>
+               </label>
             </div>
             <ErrorMessage
               name="plantPreferences"
@@ -111,12 +122,18 @@ const GardenCurationForm = ({ onClose }) => {
             />
           </div>
 
-          <button type="submit">Submit</button>
-          <button onClick={onClose}>Close</button>
+          <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
+            <button type="button" onClick={handleClose}>
+              Close
+            </button>
           </Form>
-          </Formik>
-          </div>
-        );
-    };
+        )}
+      </Formik>
+    </div>
+  );
+};
 
 export default GardenCurationForm;
+
