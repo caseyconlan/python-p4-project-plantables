@@ -11,7 +11,8 @@ from wtforms import StringField, IntegerField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Email, Length
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from werkzeug.datastructures import MultiDict
-
+from flask_cors import CORS
+from sqlalchemy import func
 
 
 # Local imports
@@ -56,7 +57,7 @@ class LoginResource(Resource):
             username = request.form.get('username')
             password = request.form.get('password')
 
-        owner = Owner.query.filter_by(username=username).first()
+        owner = Owner.query.filter(func.lower(Owner.username) == func.lower(username)).first()
         if owner and owner.check_password(password):
             # Password is correct, proceed with authentication and session handling
             session['user_id'] = owner.id
@@ -166,13 +167,57 @@ class CSRFToken(Resource):
         response.headers['X-CSRF-Token'] = csrf_token
         return response
 
+class ForgotPasswordResource(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')  # Changed 'email' to 'username'
+
+        owner = Owner.query.filter_by(username=username).first()  # Changed filter_by(email=...) to filter_by(username=...)
+        if owner:
+            # Ideally, you'd want to send an email with a reset password link 
+            # This is just a placeholder action
+            return {'message': 'Password reset link has been sent to your email'}
+        else:
+            return {'message': 'Email not found'}, 404
+
+class UpdatePasswordResource(Resource):
+    def patch(self):
+        data = request.get_json()
+        username = data.get('username')
+        new_password = data.get('new_password')
+
+        owner = Owner.query.filter_by(username=username).first()
+        if owner:
+            owner.set_password(new_password)
+            db.session.add(owner)
+            db.session.commit()
+            return {'message': 'Password updated successfully'}
+        else:
+            return {'message': 'Username not found'}, 404
+
+
+class DeleteAccountResource(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+
+        owner = Owner.query.filter_by(username=username).first()
+        if owner and owner.check_password(password):
+            db.session.delete(owner)
+            db.session.commit()
+            return '', 204  # Return 204 No Content without a response body
+        else:
+            return {'message': 'Invalid username or password'}, 404
 
 api.add_resource(CSRFToken, '/csrf-token')
 api.add_resource(OwnerList, '/owners')
 api.add_resource(OwnerByID, '/owners/<int:owner_id>')
 api.add_resource(OwnerPlants, '/owners/<int:owner_id>/plants')
 api.add_resource(PlantCatalog, '/plants')
-
+api.add_resource(DeleteAccountResource, '/delete-account')
+api.add_resource(ForgotPasswordResource, '/forgot-password')
+api.add_resource(UpdatePasswordResource, '/update-password')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

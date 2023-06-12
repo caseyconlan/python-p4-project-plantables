@@ -66,8 +66,26 @@ function App() {
       .then((data) => setOwners(data));
   }, []);
 
+  useEffect(() => {
+    // Check if the user is already logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setLoggedIn(isLoggedIn);
+  }, []);
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+    // Save logged in status in local storage
+    localStorage.setItem('isLoggedIn', 'true');
+  };
+
+  const handleLogout = () => {
+    setLoggedIn(false);
+    // Clear logged in status from local storage
+    localStorage.removeItem('isLoggedIn');
+  };
+
   if (!loggedIn) {
-    return <Login setLoggedIn={setLoggedIn} />;
+    return <Login setLoggedIn={handleLogin} />;
   }
 
   return (
@@ -84,6 +102,9 @@ function App() {
           <Link className="button-1" to="/cart">
             Cart
           </Link>
+          <button className="button-1" onClick={handleLogout}>
+            Logout
+          </button>
         </nav>
 
         <Switch>

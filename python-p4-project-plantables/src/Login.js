@@ -31,34 +31,37 @@ const Login = ({ setLoggedIn }) => {
   const handleLogin = (e) => {
     e.preventDefault();
     console.log(`Login Successful`);
-
+  
     const requestData = {
       username,
       password,
     };
-
+  
     const headers = {
       "X-CSRF-Token": csrfToken,
       "Content-Type": "application/json",
     };
-
+  
     if (csrfToken) {
       headers["X-CSRF-Token"] = csrfToken;
     }
-
+  
     axios
       .post("/login", requestData, {
         withCredentials: true,
         headers,
       })
       .then((response) => {
-        // Handle the login response
-        setLoggedIn(true);
+        if (response.data.message === 'Login successful') {
+          setLoggedIn(true);
+        } else {
+          console.log('Invalid username or password');
+        }
       })
       .catch((error) => {
-        // Handle the login error
+        console.log('Login error:', error);
       });
-  };
+  };  
 
   const handleNewPlayer = (e) => {
     e.preventDefault();
@@ -103,23 +106,81 @@ const Login = ({ setLoggedIn }) => {
     <form onSubmit={handleLogin}>
       <label>
         Username:
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
       </label>
       <label>
         Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </label>
       <button type="submit">Log In</button>
-    </form>
+      <button className="button-1" role="button" onClick={handleForgotPassword}>Forgot Password</button>
+      <button className="button-1" role="button" onClick={handleDeleteAccount}>Delete Account</button>
+  </form>
   );
+
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+
+    axios
+        .post("/forgot-password", { username }, {
+            headers: {
+                "X-CSRF-Token": csrfToken,
+                "Content-Type": "application/json",
+            },
+        })
+        .then((response) => {
+            // Prompt the user to enter a new password
+            const new_password = window.prompt('Enter a new password:');
+
+            // Update the password on the server
+            axios
+                .patch("/update-password", { username, new_password }, {
+                    headers: {
+                        "X-CSRF-Token": csrfToken,
+                        "Content-Type": "application/json",
+                    },
+                })
+                .then((response) => {
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+const handleDeleteAccount = (e) => {
+  e.preventDefault();
+
+  const requestData = {
+    username,
+    password,
+  };
+
+  const headers = {
+    "X-CSRF-Token": csrfToken,
+    "Content-Type": "application/json",
+  };
+
+  axios
+    .post("/delete-account", requestData, {
+      headers,
+      withCredentials: true,
+    })
+    .then((response) => {
+      if (response.data.message === 'Account deleted successfully') {
+        setLoggedIn(false);
+      } else {
+        console.log('Invalid username or password');
+      }
+    })
+    .catch((error) => {
+      console.log('Delete account error:', error);
+    });
+};
 
   const renderNewPlayerForm = () => (
     <form onSubmit={handleNewPlayer}>
@@ -180,8 +241,8 @@ const Login = ({ setLoggedIn }) => {
       <div className="title">Welcome to Plantables!</div>
       <div className="description">Grow your plants with love</div>
       <div>
-        <button class="button-1" role="button" onClick={() => handleFormType("login")}>Returning Customer</button>
-        <button class="button-1" role="button" onClick={() => handleFormType("newPlayer")}>New Customer</button>
+        <button className="button-1" role="button" onClick={() => handleFormType("login")}>Returning Customer</button>
+        <button className="button-1" role="button" onClick={() => handleFormType("newPlayer")}>New Customer</button>
         {formType === "login" && renderLoginForm()}
         {formType === "newPlayer" && renderNewPlayerForm()}
       </div>
